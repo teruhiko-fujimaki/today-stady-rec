@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指導の記録</title>
+    <style>
+        :root {
+            /* Color Palette - Premium & Accessible */
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #eff6ff;
+            --secondary: #64748b;
+            --accent: #059669;
+            /* Success Green */
+            --danger: #ef4444;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+
+            /* Radius */
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+
+            /* Transitions */
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+            flex: 1;
+        }
+
+        /* Interactive Elements */
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .btn-icon {
+            padding: var(--spacing-xs);
+            border-radius: 50%;
+            color: var(--secondary);
+        }
+
+        .btn-icon:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .hint {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            background-color: white;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* Input with Icon Wrapper */
+        .input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            padding-right: 40px;
+            /* Space for icon */
+        }
+
+        .btn-mic {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        textarea+.btn-mic {
+            top: 12px;
+            transform: none;
+        }
+
+        .btn-mic:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .btn-mic.recording {
+            color: var(--danger);
+            animation: pulse-red 1.5s infinite;
+            background-color: #fee2e2;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* Views */
+        .view-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Screen 1: Dashboard */
+        .dashboard-header {
+            text-align: left;
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .student-selector {
+            display: grid;
+            gap: var(--spacing-md);
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .student-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg) var(--spacing-md);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .student-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .student-card.selected {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .student-card.add-btn {
+            border-style: dashed;
+            color: var(--secondary);
+            background: #fafafa;
+        }
+
+        .student-card.add-btn:hover {
+            background: white;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .student-card:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Screen 2: Recording */
+        .perspective-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--spacing-sm);
+        }
+
+        .perspective-btn {
+            padding: var(--spacing-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .perspective-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        .perspective-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .perspective-desc {
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: block;
+            font-weight: normal;
+        }
+
+        /* Screen 3: List */
+        .record-list {
+            margin-top: var(--spacing-lg);
+        }
+
+        .record-item {
+            border-bottom: 1px solid var(--border);
+            padding: var(--spacing-md) 0;
+        }
+
+        .record-item:last-child {
+            border-bottom: none;
+        }
+
+        .record-meta {
+            display: flex;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .record-main {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* Mobile */
+            gap: var(--spacing-sm);
+        }
+
+        @media (min-width: 600px) {
+            .record-main {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            background: var(--border);
+        }
+
+        .badge-K {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-T {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-A {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-main);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: 50px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-actions {
+            margin-top: var(--spacing-lg);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-sm);
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+        <!-- View 1: Setup / Dashboard -->
+        <section id="view-dashboard" class="view-section">
+            <div class="dashboard-header">
+                <h1>生徒と日付を選択</h1>
+                <!-- <p style="color: var(--text-muted); margin-top: 8px;">「できたこと」と「手立て」をセットで記録</p> -->
+            </div>
+
+            <div class="form-group" style="max-width: 250px;">
+                <label for="date-select">日付</label>
+                <input type="date" id="date-select">
+            </div>
+
+            <div class="form-group">
+                <div id="student-list" class="student-selector">
+                    <!-- Students inserted by JS -->
+                </div>
+            </div>
+
+            <!-- Start button hidden until selection logic triggers it or we show it disabled -->
+            <div style="text-align: center; margin-top: var(--spacing-xl); display: none;">
+                <!-- This button is effectively replaced by clicking the card itself to start, 
+                     but we can keep it if we want 'select then click start'. 
+                     Current preference: Click student -> Go to record. 
+                     Wait, user might want to select multiple? No, single student record.
+                     Let's make clicking the student card immediately go to recording for that student.
+                -->
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <label>データ管理</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="btn-view-history" class="btn btn-secondary">
+                        過去の記録を見る
+                    </button>
+                    <button id="btn-backup" class="btn btn-secondary">バックアップ (JSON保存)</button>
+                    <button id="btn-restore" class="btn btn-secondary">復元 (JSON読込)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 2: Recording Form -->
+        <section id="view-record" class="view-section hidden">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <div>
+                    <h2 id="record-title">記録入力</h2>
+                    <div id="record-subtitle" style="color: var(--text-muted); font-size: 0.9em;"></div>
+                </div>
+                <button id="btn-back-dashboard" class="btn btn-secondary">戻る</button>
+            </div>
+
+            <form id="record-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                    <div class="form-group">
+                        <label for="input-period">時限</label>
+                        <select id="input-period">
+                            <option value="1">1限</option>
+                            <option value="2">2限</option>
+                            <option value="3">3限</option>
+                            <option value="4">4限</option>
+                            <option value="5">5限</option>
+                            <option value="6">6限</option>
+                            <option value="朝">朝</option>
+                            <option value="帰り">帰り</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-subject">教科</label>
+                        <input type="text" id="input-subject" list="subject-suggestions" placeholder="例: 国語">
+                        <datalist id="subject-suggestions">
+                            <option value="国語">
+                            <option value="社会">
+                            <option value="数学">
+                            <option value="理科">
+                            <option value="音楽">
+                            <option value="美術">
+                            <option value="保健体育">
+                            <option value="技術・家庭">
+                            <option value="外国語">
+                            <option value="自立活動">
+                        </datalist>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-unit">単元</label>
+                    <div class="input-group">
+                        <input type="text" id="input-unit" placeholder="例: かけ算九九">
+                        <button type="button" class="btn-mic" data-target="input-unit" aria-label="音声入力">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>評価の観点 <span
+                            style="color: var(--secondary); font-weight: normal; font-size: 0.9em;">(Enterキーで選択可)</span></label>
+                    <div class="perspective-buttons" role="group" aria-label="評価の観点">
+                        <button type="button" class="perspective-btn" data-value="K" aria-pressed="false">
+                            <strong>K</strong> <span class="perspective-desc">知識・技能</span>
+                        </button>
+                        <button type="button" class="perspective-btn" data-value="T" aria-pressed="false">
+                            <strong>T</strong> <span class="perspective-desc">思考・判断・表現</span>
+                        </button>
+                        <button type="button" class="perspective-btn" data-value="A" aria-pressed="false">
+                            <strong>A</strong> <span class="perspective-desc">主体的に取り組む態度</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="input-perspective" required>
+                    <div id="perspective-hint" class="hint" style="margin-top: 8px; color: var(--primary);">
+                        観点を選択すると、記録のヒントが表示されます</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-situation">観察した場面</label>
+                    <input type="text" id="input-situation" list="situation-suggestions" placeholder="例: グループ活動で...">
+                    <datalist id="situation-suggestions">
+                        <option value="全体発問">
+                        <option value="グループ活動">
+                        <option value="個別作業">
+                        <option value="発表">
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-achievement">できたこと（事実＋短い解釈）</label>
+                    <div class="input-group">
+                        <textarea id="input-achievement" rows="3" placeholder="例: ○○を使って、最後まで計算できた。"
+                            required></textarea>
+                        <button type="button" class="btn-mic" data-target="input-achievement" aria-label="音声入力">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-support">手立て（工夫・支援）</label>
+                    <div class="input-group">
+                        <textarea id="input-support" rows="2" placeholder="例: 具体物を提示した、手順表を渡した"></textarea>
+                        <button type="button" class="btn-mic" data-target="input-support" aria-label="音声入力">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input-next">次時の手立てメモ</label>
+                    <div class="input-group">
+                        <input type="text" id="input-next" placeholder="例: 補助なしでやってみる">
+                        <button type="button" class="btn-mic" data-target="input-next" aria-label="音声入力">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">保存して次へ</button>
+                    <button type="button" id="btn-save-finish" class="btn btn-secondary" style="flex: 1;">一覧へ</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- View 3: History / List -->
+        <section id="view-history" class="view-section hidden">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <h2>記録一覧</h2>
+                <div>
+                    <button id="btn-copy-excel" class="btn btn-primary">Excel形式でコピー</button>
+                    <button id="btn-back-home" class="btn btn-secondary">ホームへ</button>
+                </div>
+            </div>
+
+            <!-- Filters could go here -->
+
+            <div id="history-container" class="record-list">
+                <!-- Records injected here -->
+                <p style="text-align: center; color: var(--text-muted);">記録がありません</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-manage-students" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>生徒管理</h3>
+            <p class="hint">改行で区切って複数の生徒名を入力してください</p>
+            <textarea id="input-student-names" rows="10" style="width: 100%; margin-top: 10px;"></textarea>
+            <div class="modal-actions">
+                <button id="btn-close-students" class="btn btn-secondary">キャンセル</button>
+                <button id="btn-save-students" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-crypto-password" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 id="crypto-modal-title">パスワード入力</h3>
+            <p class="hint">データの暗号化・復号に使用するパスワードを入力してください。</p>
+            <div class="form-group" style="margin-top: var(--spacing-md);">
+                <input type="password" id="input-crypto-password" placeholder="パスワード">
+            </div>
+            <div class="modal-actions">
+                <button id="btn-crypto-cancel" class="btn btn-secondary">キャンセル</button>
+                <button id="btn-crypto-confirm" class="btn btn-primary">実行</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for restore -->
+    <input type="file" id="file-restore" accept=".json" class="hidden">
+
+    <div id="toast">保存しました</div>
+
+    <script>
+        /**
+         * Voice Input Helper
+         */
+        function setupVoiceInput() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                console.warn('Speech API not supported');
+                // Hide mic buttons if not supported
+                document.querySelectorAll('.btn-mic').forEach(b => b.classList.add('hidden'));
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            document.querySelectorAll('.btn-mic').forEach(btn => {
+                btn.onclick = () => {
+                    const targetId = btn.dataset.target;
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+
+                    // If already recording, stop
+                    if (btn.classList.contains('recording')) {
+                        if (btn.recognition) btn.recognition.stop();
+                        return;
+                    }
+
+                    const recognition = new SpeechRecognition();
+                    recognition.lang = 'ja-JP';
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    btn.recognition = recognition;
+                    btn.classList.add('recording');
+
+                    recognition.onresult = (event) => {
+                        const text = event.results[0][0].transcript;
+                        // Append or replace? Append usually better for notes, but for short fields replace might be expected.
+                        // Let's Append with space if value exists.
+                        const currentVal = input.value;
+                        input.value = currentVal ? currentVal + ' ' + text : text;
+                        input.dispatchEvent(new Event('change')); // Trigger changes if any listener
+                    };
+
+                    recognition.onerror = (event) => {
+                        console.error('Speech error', event.error);
+                        showToast('音声認識エラー: ' + event.error);
+                        btn.classList.remove('recording');
+                    };
+
+                    recognition.onend = () => {
+                        btn.classList.remove('recording');
+                        btn.recognition = null;
+                    };
+
+                    recognition.start();
+                };
+            });
+        }
+
+        /**
+         * App State & Logic
+         */
+        const App = {
+            data: {
+                students: [],
+                records: []
+            },
+            state: {
+                currentStudentIndex: null,
+                selectedDate: new Date().toISOString().split('T')[0],
+                editingRecordId: null // Future extensibility
+            },
+
+            init() {
+                this.loadData();
+                this.setupUI();
+                this.renderStudents();
+                // Set default date
+                document.getElementById('date-select').value = this.state.selectedDate;
+
+                // Init Voice
+                setupVoiceInput();
+            },
+
+            loadData() {
+                const saved = localStorage.getItem('achievements_data');
+                if (saved) {
+                    try {
+                        this.data = JSON.parse(saved);
+                    } catch (e) {
+                        console.error("Data load failed", e);
+                    }
+                }
+            },
+
+            saveData() {
+                localStorage.setItem('achievements_data', JSON.stringify(this.data));
+            },
+
+            setupUI() {
+                /* Navigation */
+                // Old bulk manage button removed, but modal kept in case we want to reuse someday, or we can remove logic.
+                // Keeping it dormant for now.
+
+                document.getElementById('btn-close-students').onclick = () => hideModal('modal-manage-students');
+                document.getElementById('btn-save-students').onclick = () => {
+                    const text = document.getElementById('input-student-names').value;
+                    this.data.students = text.split('\n').map(s => s.trim()).filter(s => s);
+                    this.saveData();
+                    this.renderStudents();
+                    hideModal('modal-manage-students');
+                };
+
+                /* Student Selection Logic */
+                document.getElementById('student-list').addEventListener('click', (e) => {
+                    // Handle Delete Button
+                    const deleteBtn = e.target.closest('.delete-btn');
+                    if (deleteBtn) {
+                        e.stopPropagation();
+                        const index = parseInt(deleteBtn.dataset.index);
+                        if (confirm(`「${this.data.students[index]}」を削除しますか？\n（この生徒の過去の記録は残りますが、生徒一覧からは消えます）`)) {
+                            this.data.students.splice(index, 1);
+                            this.saveData();
+                            this.renderStudents();
+                        }
+                        return;
+                    }
+
+                    // Handle Add Button
+                    const addBtn = e.target.closest('.student-card.add-btn');
+                    if (addBtn) {
+                        const name = prompt("生徒名を入力してください");
+                        if (name && name.trim()) {
+                            this.data.students.push(name.trim());
+                            this.saveData();
+                            this.renderStudents();
+                        }
+                        return;
+                    }
+
+                    // Handle Select
+                    const card = e.target.closest('.student-card');
+                    if (card && card.dataset.index !== undefined) {
+                        this.selectStudent(parseInt(card.dataset.index));
+                    }
+                });
+
+                document.getElementById('date-select').onchange = (e) => {
+                    this.state.selectedDate = e.target.value;
+                };
+
+                // btn-start-record is hidden now, flow is direct click.
+
+                document.getElementById('btn-view-history').onclick = () => {
+                    this.renderHistory();
+                    this.showScreen('view-history');
+                };
+
+                document.getElementById('btn-back-dashboard').onclick = () => this.showScreen('view-dashboard');
+                document.getElementById('btn-back-home').onclick = () => this.showScreen('view-dashboard');
+                document.getElementById('btn-save-finish').onclick = () => {
+                    if (this.handleRecordSubmit(false)) { // Validate only
+                        this.handleRecordSubmit(true);
+                        this.renderHistory();
+                        this.showScreen('view-history');
+                    }
+                };
+
+                /* Perspective Buttons Logic */
+                const pBtns = document.querySelectorAll('.perspective-btn');
+                pBtns.forEach(btn => {
+                    btn.onclick = () => {
+                        pBtns.forEach(b => {
+                            b.classList.remove('active');
+                            b.setAttribute('aria-pressed', 'false');
+                        });
+                        btn.classList.add('active');
+                        btn.setAttribute('aria-pressed', 'true');
+
+                        const val = btn.dataset.value;
+                        document.getElementById('input-perspective').value = val;
+
+                        // Show hints
+                        const hints = {
+                            'K': 'K（知識・技能）：ノートの書き方、作業手順、技能の正確さなど',
+                            'T': 'T（思考・判断・表現）：理由の説明、他者との比較、図や式での表現など',
+                            'A': 'A（主体的態度）：自分で課題を見つける、振り返りを次に活かす、粘り強く取り組むなど'
+                        };
+                        document.getElementById('perspective-hint').textContent = hints[val] || '';
+                    };
+                });
+
+                /* Form Submission */
+                document.getElementById('record-form').onsubmit = (e) => {
+                    e.preventDefault();
+                    this.handleRecordSubmit(true);
+                };
+
+                /* Excel Copy */
+                document.getElementById('btn-copy-excel').onclick = () => this.copyToClipboard();
+
+                /* Backup / Restore */
+                document.getElementById('btn-backup').onclick = () => this.initiateBackup();
+                document.getElementById('btn-restore').onclick = () => document.getElementById('file-restore').click();
+                document.getElementById('file-restore').onchange = (e) => this.initiateRestore(e.target.files[0]);
+
+                // Crypto Modal handlers are attached dynamically or here
+            },
+
+            selectStudent(index) {
+                this.state.currentStudentIndex = index;
+                const studentName = this.data.students[index];
+
+                // Immediately go to record screen as per "Select student -> Do thing" flow
+                this.showScreen('view-record');
+                document.getElementById('record-title').textContent = `${studentName} さんの記録`;
+                document.getElementById('record-subtitle').textContent = `日付: ${this.state.selectedDate}`;
+
+                this.resetRecordForm();
+                document.getElementById('input-period').focus();
+            },
+
+            renderStudents() {
+                const container = document.getElementById('student-list');
+                container.innerHTML = '';
+
+                // Existing students
+                this.data.students.forEach((name, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'student-card';
+                    div.dataset.index = i;
+                    div.setAttribute('role', 'button');
+                    div.setAttribute('tabindex', '0');
+                    div.setAttribute('aria-label', `${name}を選択`);
+
+                    div.innerHTML = `
+                        ${escapeHtml(name)}
+                        <button class="delete-btn" data-index="${i}" aria-label="${name}を削除" title="削除">×</button>
+                    `;
+
+                    div.onkeydown = (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.selectStudent(i);
+                        }
+                    };
+                    container.appendChild(div);
+                });
+
+                // Add Button Card
+                const addBtn = document.createElement('div');
+                addBtn.className = 'student-card add-btn';
+                addBtn.setAttribute('role', 'button');
+                addBtn.setAttribute('tabindex', '0');
+                addBtn.textContent = '+ 生徒を追加';
+                addBtn.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        addBtn.click();
+                    }
+                };
+                container.appendChild(addBtn);
+            },
+
+            showScreen(id) {
+                document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+                document.getElementById(id).classList.remove('hidden');
+            },
+
+            resetRecordForm() {
+                document.getElementById('record-form').reset();
+                document.querySelectorAll('.perspective-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                document.getElementById('input-perspective').value = '';
+                document.getElementById('perspective-hint').textContent = '観点を選択すると、記録のヒントが表示されます';
+            },
+
+            handleRecordSubmit(save) {
+                const form = document.getElementById('record-form');
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return false;
+                }
+
+                const studentName = this.data.students[this.state.currentStudentIndex];
+                if (!studentName) return false;
+
+                const record = {
+                    id: crypto.randomUUID(),
+                    date: this.state.selectedDate,
+                    student: studentName,
+                    period: document.getElementById('input-period').value,
+                    subject: document.getElementById('input-subject').value,
+                    unit: document.getElementById('input-unit').value,
+                    perspective: document.getElementById('input-perspective').value,
+                    situation: document.getElementById('input-situation').value,
+                    achievement: document.getElementById('input-achievement').value,
+                    support: document.getElementById('input-support').value,
+                    next: document.getElementById('input-next').value,
+                    timestamp: new Date().toISOString()
+                };
+
+                if (save) {
+                    this.data.records.push(record);
+                    this.saveData();
+                    showToast('記録を保存しました');
+                    this.resetRecordForm();
+                    document.getElementById('input-period').focus(); // Focus back to start for next entry
+                }
+                return true;
+            },
+
+            renderHistory() {
+                const container = document.getElementById('history-container');
+                container.innerHTML = '';
+
+                // Sort by date desc
+                const sorted = [...this.data.records].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                if (sorted.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">記録がありません</p>';
+                    return;
+                }
+
+                sorted.forEach(rec => {
+                    const el = document.createElement('div');
+                    el.className = 'record-item';
+
+                    const pClass = `badge-${rec.perspective}`;
+
+                    el.innerHTML = `
+                        <div class="record-meta">
+                            <span>${rec.date}</span>
+                            <span>${rec.period}</span>
+                            <span>${rec.subject}</span>
+                            <span>${rec.student}</span>
+                            <span class="badge ${pClass}">${rec.perspective}</span>
+                        </div>
+                        <div class="record-main">
+                            <div>
+                                <strong>できたこと:</strong> ${escapeHtml(rec.achievement)}
+                                <div style="font-size: 0.9em; color: var(--text-muted); margin-top: 4px;">
+                                    ${rec.situation ? `(場面: ${escapeHtml(rec.situation)})` : ''} 
+                                    ${rec.unit ? `[${escapeHtml(rec.unit)}]` : ''}
+                                </div>
+                            </div>
+                            <div style="font-size: 0.9em; background: #f1f5f9; padding: 8px; border-radius: 4px;">
+                                <div><strong>手立て:</strong> ${escapeHtml(rec.support)}</div>
+                                ${rec.next ? `<div style="margin-top:4px;"><strong>次:</strong> ${escapeHtml(rec.next)}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(el);
+                });
+            },
+
+            copyToClipboard() {
+                // Header
+                let tsv = '日付\t時限\t生徒\t教科\t単元\t観点\t場面\tできたこと\t手立て\t次時メモ\n';
+
+                this.data.records.forEach(r => {
+                    tsv += `${r.date}\t${r.period}\t${r.student}\t${r.subject}\t${r.unit}\t${r.perspective}\t${r.situation}\t${r.achievement}\t${r.support}\t${r.next}\n`;
+                });
+
+                navigator.clipboard.writeText(tsv).then(() => {
+                    showToast('Excel形式でコピーしました');
+                });
+            },
+
+            async initiateBackup() {
+                // Ask for password
+                const password = await promptPassword("バックアップ暗号化パスワード");
+                if (!password) return;
+
+                try {
+                    const jsonStr = JSON.stringify(this.data);
+                    const encrypted = await encryptData(jsonStr, password);
+
+                    // Create download
+                    const blob = new Blob([JSON.stringify(encrypted)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `record_backup_${new Date().toISOString().slice(0, 10)}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    showToast('バックアップファイルを保存しました');
+                } catch (e) {
+                    alert('暗号化に失敗しました: ' + e);
+                }
+            },
+
+            async initiateRestore(file) {
+                if (!file) return;
+                const password = await promptPassword("復元用パスワード");
+                if (!password) {
+                    document.getElementById('file-restore').value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    try {
+                        const encryptedObj = JSON.parse(e.target.result);
+                        const decryptedStr = await decryptData(encryptedObj, password);
+                        const data = JSON.parse(decryptedStr);
+
+                        // Merge or Replace? Let's Replace for safety as per spec implies full restore
+                        if (confirm(`復元しますか？\n生徒数: ${data.students.length}\n記録数: ${data.records ? data.records.length : 0}`)) {
+                            this.data = data;
+                            this.saveData();
+                            this.init();
+                            showToast('復元が完了しました');
+                        }
+                    } catch (err) {
+                        alert('復元に失敗しました。パスワードが間違っているか、ファイルが破損しています。');
+                        console.error(err);
+                    }
+                    document.getElementById('file-restore').value = '';
+                };
+                reader.readAsText(file);
+            }
+        };
+
+        /* Helpers */
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function showModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function hideModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        /* Password Modal wrapper */
+        function promptPassword(title) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('modal-crypto-password');
+                const titleEl = document.getElementById('crypto-modal-title');
+                const input = document.getElementById('input-crypto-password');
+                const btnOk = document.getElementById('btn-crypto-confirm');
+                const btnCancel = document.getElementById('btn-crypto-cancel');
+
+                titleEl.textContent = title;
+                input.value = '';
+                modal.classList.remove('hidden');
+                input.focus();
+
+                const finish = (val) => {
+                    modal.classList.add('hidden');
+                    // clean up events to avoid stacking
+                    btnOk.onclick = null;
+                    btnCancel.onclick = null;
+                    input.onkeydown = null;
+                    resolve(val);
+                };
+
+                btnOk.onclick = () => finish(input.value);
+                btnCancel.onclick = () => finish(null);
+                input.onkeydown = (e) => {
+                    if (e.key === 'Enter') finish(input.value);
+                    if (e.key === 'Escape') finish(null);
+                };
+            });
+        }
+
+        /**
+         * Encryption Logic (AES-GCM)
+         */
+        async function getCryptoKey(password, salt) {
+            const enc = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey(
+                "raw",
+                enc.encode(password),
+                { name: "PBKDF2" },
+                false,
+                ["deriveKey"]
+            );
+            return crypto.subtle.deriveKey(
+                {
+                    name: "PBKDF2",
+                    salt: salt,
+                    iterations: 100000,
+                    hash: "SHA-256"
+                },
+                keyMaterial,
+                { name: "AES-GCM", length: 256 },
+                false,
+                ["encrypt", "decrypt"]
+            );
+        }
+
+        async function encryptData(dataStr, password) {
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const key = await getCryptoKey(password, salt);
+            const enc = new TextEncoder();
+
+            const encrypted = await crypto.subtle.encrypt(
+                { name: "AES-GCM", iv: iv },
+                key,
+                enc.encode(dataStr)
+            );
+
+            // Convert buffers to base64 for JSON storage
+            return {
+                salt: arrayBufferToBase64(salt),
+                iv: arrayBufferToBase64(iv),
+                data: arrayBufferToBase64(encrypted)
+            };
+        }
+
+        async function decryptData(encryptedObj, password) {
+            const salt = base64ToArrayBuffer(encryptedObj.salt);
+            const iv = base64ToArrayBuffer(encryptedObj.iv);
+            const data = base64ToArrayBuffer(encryptedObj.data);
+
+            const key = await getCryptoKey(password, salt);
+
+            const decrypted = await crypto.subtle.decrypt(
+                { name: "AES-GCM", iv: iv },
+                key,
+                data
+            );
+
+            return new TextDecoder().decode(decrypted);
+        }
+
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binary_string = window.atob(base64);
+            const len = binary_string.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        /* Init App */
+        window.addEventListener('DOMContentLoaded', () => {
+            App.init();
+        });
+
+    </script>
+</body>
+
+</html>
